@@ -14,7 +14,6 @@ export default class Play extends Scene {
 
     const fish = new Fish();
     this.addChild(fish)
-
   }
 
   /**
