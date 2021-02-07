@@ -1,3 +1,5 @@
+import { PixiPlugin } from "gsap/all";
+import gsap from "gsap/gsap-core";
 import { AnimatedSprite, Sprite, Texture } from "pixi.js";
 
 export default class Fish extends Sprite {
@@ -8,8 +10,11 @@ export default class Fish extends Sprite {
     }
 
     expand() {
-        console.log(this._fish)
+        gsap.registerPlugin(PixiPlugin)
+
         this._fish.texture = this._fish.textures[1]
+        gsap.to(this._fish, { pixi: { scale: 1.5 }, ease: "elastic(1, 0.5)" })
+
         setTimeout(() =>
             this.contract()
             , 5000)
@@ -17,6 +22,8 @@ export default class Fish extends Sprite {
 
     contract() {
         this._fish.texture = this._fish.textures[0]
+        gsap.to(this._fish, { pixi: { scale: 1 } })
+
     }
 
     /**
@@ -31,7 +38,7 @@ export default class Fish extends Sprite {
         fish.interactive = true;
         fish.buttonMode = true;
         this.addChild(fish)
-        
+
 
         fish.on('click', () => this.expand())
 
