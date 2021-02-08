@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import { Sprite, Texture } from 'pixi.js';
 import Scene from './Scene';
 import gsap from 'gsap';
 import Footer from '../components/Footer';
@@ -12,8 +12,9 @@ export default class Play extends Scene {
     footer.y = window.innerHeight / 2 - footer.height;
     this.addChild(footer);
 
-    const fish = new Fish();
+    const fish = new Fish(new Texture.from('smallFish'));
     this.addChild(fish)
+    fish.on('click', () => fish.expand())
   }
 
   /**

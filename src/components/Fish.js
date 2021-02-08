@@ -1,47 +1,32 @@
 import { PixiPlugin } from "gsap/all";
 import gsap from "gsap/gsap-core";
-import { AnimatedSprite, Sprite, Texture } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 
 export default class Fish extends Sprite {
-    constructor() {
-        super();
+    constructor(texture) {
+        super(texture);
         this.name = 'fish';
-        this._fish = this._onCreate()
+        this.interactive = true;
+        this.buttonMode = true;
+        this.anchor.set(0.5)
+        this._textures = {
+            smallFish: new Texture.from('smallFish'),
+            bigFish: new Texture.from('bigFish')
+        };
     }
 
     expand() {
         gsap.registerPlugin(PixiPlugin)
-
-        this._fish.texture = this._fish.textures[1]
-        gsap.to(this._fish, { pixi: { scale: 1.5 }, ease: "elastic(1, 0.5)" })
-
+        this.texture = this._textures.bigFish
+        gsap.to(this, { pixi: { scale: 1.5 }, ease: "elastic(1, 0.5)" })
+        
         setTimeout(() =>
             this.contract()
             , 5000)
     }
 
     contract() {
-        this._fish.texture = this._fish.textures[0]
-        gsap.to(this._fish, { pixi: { scale: 1 } })
-
-    }
-
-    /**
-    * @private
-    */
-    _onCreate() {
-        const texturesObj = {};
-        texturesObj['fish'] = [new Texture.from('smallFish'), new Texture.from('bigFish')]
-
-        const fish = new AnimatedSprite(texturesObj.fish)
-        fish.anchor.set(0.5)
-        fish.interactive = true;
-        fish.buttonMode = true;
-        this.addChild(fish)
-
-
-        fish.on('click', () => this.expand())
-
-        return fish;
+        gsap.to(this, { pixi: { scale: 1 }, duration: 0.3 })
+        this.texture = this._textures.smallFish;
     }
 }
